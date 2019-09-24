@@ -1,22 +1,28 @@
 package com.superloop.todo.service;
 
-import com.superloop.todo.repository.Todo;
+import com.superloop.todo.repository.TodoItem;
+import com.superloop.todo.repository.TodoItemRepository;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 public interface ITodoService {
 
-    List<Todo> getPendingList();
+    void setTodoRepository(TodoItemRepository todoRepository);
 
-    List<Todo> getDoneList();
+    List<TodoItem> getPendingList();
 
-    boolean addItem(Todo item);
+    List<TodoItem> getDoneList();
 
-    Todo getItem(Long id);
+    void addItem(@Valid TodoItem newItem);
 
-    boolean editItem(Long id, Todo item);
+    TodoItem getItem(Long id);
 
-    boolean markItemAsDone(Long id);
+    void editItem(Long id, TodoItem item);
 
-    boolean deleteTodo(Long id);
+    void markItemAsDone(Long id);
+
+    void deleteTodo(Long id);
 }
