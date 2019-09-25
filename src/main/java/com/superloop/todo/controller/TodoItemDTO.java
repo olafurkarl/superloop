@@ -1,37 +1,34 @@
-package com.superloop.todo.repository;
+package com.superloop.todo.controller;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Validated
-@Entity
-public class TodoItem {
-    @Id
-    @GeneratedValue
+public class TodoItemDTO {
     private Long id;
 
-    @Column(nullable = false)
+    @NotEmpty(message = "Name is required")
     private String name;
 
-    @Column
+    @FutureOrPresent(message = "Date must not be due in the past")
     private LocalDate dueDate;
 
-    @Column
+    @Length(max = 500, message = "Description must not exceed 500 characters")
     private String description;
 
-    @Column(nullable = false)
+    @Pattern(regexp = "Pending", flags = Pattern.Flag.UNICODE_CASE)
     private String status;
 
-    public TodoItem() {
+    public TodoItemDTO() {
     }
 
-    public TodoItem(String name, String description,
-                    LocalDate dueDate, String status) {
+    public TodoItemDTO(Long id, String name, String description, LocalDate dueDate, String status) {
+        this.id = id;
         this.name = name;
         this.dueDate = dueDate;
         this.description = description;

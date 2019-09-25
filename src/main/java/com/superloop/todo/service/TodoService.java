@@ -1,13 +1,12 @@
 package com.superloop.todo.service;
 
+import com.superloop.todo.controller.TodoItemDTO;
 import com.superloop.todo.repository.TodoItem;
 import com.superloop.todo.repository.TodoItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,39 +20,27 @@ public class TodoService implements ITodoService {
         this.todoRepository = todoRepository;
     }
 
-    public void setTodoRepository(TodoItemRepository todoRepository) {
-        this.todoRepository = todoRepository;
-    }
-
-    // get list of pending items
-    public List<TodoItem> getPendingList() {
+    public List<TodoItemDTO> getPendingList() {
         // todo implement get pending list
         return new ArrayList<>();
     }
 
-    // get list of done items
-    public List<TodoItem> getDoneList() {
+    public List<TodoItemDTO> getDoneList() {
         // todo implement get done list
         return new ArrayList<>();
     }
 
-    // add new item
-    public void addItem(@Valid TodoItem newItem) {
-        if ("Done".equals(newItem.getStatus())) {
-            throw new InvalidParameterException("new items must have 'Pending' status");
-        }
+    public void addItem(TodoItem newItem) {
         todoRepository.save(newItem);
     }
 
-    // get item by id
     public TodoItem getItem(Long id) {
-        // todo implement get item
-        return null;
+        return todoRepository.findTodoItemById(id);
     }
 
     // edit item
     // - status field must not be edited here!
-    public void editItem(Long id, TodoItem item) {
+    public void editItem(TodoItem item) {
         // todo edit item
     }
 
@@ -62,7 +49,7 @@ public class TodoService implements ITodoService {
         // todo implement mark item as done
     }
 
-    public void deleteTodo(Long id) {
+    public void deleteItem(Long id) {
         // todo implement delete
     }
 }
