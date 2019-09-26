@@ -16,8 +16,8 @@ public class TodoService implements ITodoService {
 
     private ModelMapper modelMapper;
 
-    private static final String STATUS_DONE = "Done";
-    private static final String STATUS_PENDING = "Pending";
+    public static final String STATUS_DONE = "Done";
+    public static final String STATUS_PENDING = "Pending";
 
     @Autowired
     public TodoService(TodoItemRepository todoRepository, ModelMapper modelMapper) {
@@ -63,7 +63,6 @@ public class TodoService implements ITodoService {
         todoRepository.save(changedItem);
     }
 
-    // mark an item as "done"
     public void markItemAsDone(Long id) {
         TodoItem itemToBeMarked = todoRepository.findTodoItemById(id);
 
@@ -71,7 +70,7 @@ public class TodoService implements ITodoService {
             throw new ItemNotFoundException("Todo item with given id not found");
         }
 
-        itemToBeMarked.setStatus("Done");
+        itemToBeMarked.setStatus(STATUS_DONE);
         todoRepository.save(itemToBeMarked);
     }
 

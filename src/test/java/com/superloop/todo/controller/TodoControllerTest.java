@@ -23,6 +23,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.superloop.todo.service.TodoService.STATUS_DONE;
+import static com.superloop.todo.service.TodoService.STATUS_PENDING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
@@ -37,9 +39,6 @@ public class TodoControllerTest {
     private TestRestTemplate restTemplate;
 
     private final ObjectMapper mapper = new ObjectMapper();
-
-    private static final String STATUS_DONE = "Done";
-    private static final String STATUS_PENDING = "Pending";
 
     private static final Long MOCK_ITEM_ID = 1L;
     private static final String MOCK_ITEM_NAME = "Mock todo";
