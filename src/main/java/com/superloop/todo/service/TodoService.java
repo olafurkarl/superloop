@@ -3,6 +3,7 @@ package com.superloop.todo.service;
 import com.superloop.todo.controller.TodoItemDTO;
 import com.superloop.todo.repository.TodoItem;
 import com.superloop.todo.repository.TodoItemRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -15,9 +16,12 @@ import java.util.List;
 public class TodoService implements ITodoService {
     private TodoItemRepository todoRepository;
 
+    private ModelMapper modelMapper;
+
     @Autowired
-    public TodoService(TodoItemRepository todoRepository) {
+    public TodoService(TodoItemRepository todoRepository, ModelMapper modelMapper) {
         this.todoRepository = todoRepository;
+        this.modelMapper = modelMapper;
     }
 
     public List<TodoItemDTO> getPendingList() {
@@ -30,18 +34,28 @@ public class TodoService implements ITodoService {
         return new ArrayList<>();
     }
 
-    public void addItem(TodoItem newItem) {
-        todoRepository.save(newItem);
+    public void addItem(TodoItemDTO newItem) {
+        TodoItem itemEntity = convertToEntity(newItem);
+        todoRepository.save(itemEntity);
     }
 
-    public TodoItem getItem(Long id) {
-        return todoRepository.findTodoItemById(id);
+    public TodoItemDTO getItem(Long id) {
+        TodoItem item = todoRepository.findTodoItemById(id);
+        return convertToDTO(item);
     }
 
     // edit item
     // - status field must not be edited here!
-    public void editItem(TodoItem item) {
-        // todo edit item
+    public void editItem(TodoItemDTO item) {
+        TodoItem itemToBeEdited = todoRepository.findTodoItemById(item.getId());
+
+        // make sure that status does not get edited in this method
+        if (!itemToBeEdited.getStatus().equals(item.getStatus())) {
+            throw new IllegalEditException("Change to status field not allowed.");
+        }
+
+        TodoItem changedItem = convertToEntity(item);
+        todoRepository.save(changedItem);
     }
 
     // mark an item as "done"
@@ -51,5 +65,14 @@ public class TodoService implements ITodoService {
 
     public void deleteItem(Long id) {
         // todo implement delete
+    }
+
+    // todo add tests for these
+    public TodoItem convertToEntity(TodoItemDTO itemDTO) {
+        return modelMapper.map(itemDTO, TodoItem.class);
+    }
+
+    public TodoItemDTO convertToDTO(TodoItem item) {
+        return modelMapper.map(item, TodoItemDTO.class);
     }
 }

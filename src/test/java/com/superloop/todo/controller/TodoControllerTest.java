@@ -1,9 +1,8 @@
-package com.superloop.todo.service;
+package com.superloop.todo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.superloop.todo.controller.TodoItemDTO;
 import com.superloop.todo.repository.TodoItem;
 import com.superloop.todo.repository.TodoItemRepository;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -54,6 +53,9 @@ public class TodoControllerTest {
                     MOCK_ITEM_DUE_DATE, MOCK_ITEM_STATUS);
 
     private static final String ADD_ITEM_URL = "/addItem";
+    private static final String GET_ITEM_URL = "/getItem";
+    private static final String EDIT_ITEM_URL = "/editItem";
+
 
     @Before
     public void setup() {
@@ -143,8 +145,7 @@ public class TodoControllerTest {
 
     @Test
     public void testGetItem() throws JsonProcessingException {
-        String url = "/getItem";
-        UriComponentsBuilder builder = UriComponentsBuilder.fromPath(url)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath(GET_ITEM_URL)
                 .queryParam("itemId", MOCK_ITEM_ID);
 
         ResponseEntity<String> response = restTemplate.getForEntity(builder.toUriString(), String.class);
@@ -153,5 +154,65 @@ public class TodoControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockJson, response.getBody());
+    }
+
+    @Test
+    public void testEditItem() throws JsonProcessingException {
+        TodoItemDTO testItem = new TodoItemDTO(MOCK_ITEM_ID, "Changed name", "Changed description",
+                TEST_TODO_DATE, TEST_TODO_STATUS);
+
+        String json = mapper.writeValueAsString(testItem);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(json, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(EDIT_ITEM_URL, entity, String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testEditItemIllegalStatus() throws JsonProcessingException {
+        // Making a test item with an illegal status field
+        TodoItemDTO testItem = new TodoItemDTO(MOCK_ITEM_ID, MOCK_ITEM_NAME, MOCK_ITEM_DESCRIPTION,
+                MOCK_ITEM_DUE_DATE, "Not a legal status");
+
+        String json = mapper.writeValueAsString(testItem);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(json, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(EDIT_ITEM_URL, entity, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    public void testEditItemChangedStatus() throws JsonProcessingException {
+        TodoItem mockedItem2 =
+                new TodoItem(MOCK_ITEM_NAME, MOCK_ITEM_DESCRIPTION,
+                        MOCK_ITEM_DUE_DATE, "Done");
+
+        Long mockedItem2Id = 3L;
+        mockedItem2.setId(mockedItem2Id);
+
+        given(todoItemRepository.findTodoItemById(mockedItem2Id))
+                .willReturn(mockedItem2);
+
+        // Changing the status, should not be allowed here
+        TodoItemDTO testItem = new TodoItemDTO(mockedItem2Id, MOCK_ITEM_NAME, MOCK_ITEM_DESCRIPTION,
+                MOCK_ITEM_DUE_DATE, "Pending");
+
+        String json = mapper.writeValueAsString(testItem);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(json, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(EDIT_ITEM_URL, entity, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 }

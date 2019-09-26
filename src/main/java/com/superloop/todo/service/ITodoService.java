@@ -11,13 +11,16 @@ public interface ITodoService {
 
     List<TodoItemDTO> getDoneList();
 
-    void addItem(TodoItem newItem);
+    void addItem(TodoItemDTO newItem);
 
-    TodoItem getItem(Long id);
+    TodoItemDTO getItem(Long id);
 
-    void editItem(TodoItem item);
+    void editItem(TodoItemDTO item);
 
     void markItemAsDone(Long id);
 
     void deleteItem(Long id);
+
+    TodoItem convertToEntity(TodoItemDTO itemDTO);
+    TodoItemDTO convertToDTO(TodoItem item);
 }

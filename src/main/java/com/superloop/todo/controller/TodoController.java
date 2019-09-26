@@ -1,8 +1,6 @@
 package com.superloop.todo.controller;
 
-import com.superloop.todo.repository.TodoItem;
 import com.superloop.todo.service.ITodoService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +13,20 @@ import java.util.List;
 public class TodoController {
     private final ITodoService todoService;
 
-    private ModelMapper modelMapper;
-
     @Autowired
-    public TodoController(ITodoService todoService, ModelMapper modelMapper) {
+    public TodoController(ITodoService todoService) {
         this.todoService = todoService;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/addItem")
     public void addItem(@Valid @RequestBody TodoItemDTO itemDTO) {
-        todoService.addItem(convertToEntity(itemDTO));
+        todoService.addItem(itemDTO);
     }
 
     @GetMapping("/getItem")
     public TodoItemDTO getItem(@RequestParam Long itemId) {
-        TodoItem item = todoService.getItem(itemId);
-        return convertToDTO(item);
+        TodoItemDTO item = todoService.getItem(itemId);
+        return item;
     }
 
     @GetMapping("/getDoneList")
@@ -46,7 +41,7 @@ public class TodoController {
 
     @PostMapping("/editItem")
     public void editItem(@Valid @RequestBody TodoItemDTO itemDTO) {
-        todoService.editItem(convertToEntity(itemDTO));
+        todoService.editItem(itemDTO);
     }
 
     @PostMapping("/markItemAsDone")
@@ -59,11 +54,4 @@ public class TodoController {
         todoService.deleteItem(itemId);
     }
 
-    private TodoItem convertToEntity(TodoItemDTO itemDTO) {
-        return modelMapper.map(itemDTO, TodoItem.class);
-    }
-
-    private TodoItemDTO convertToDTO(TodoItem item) {
-        return modelMapper.map(item, TodoItemDTO.class);
-    }
 }
