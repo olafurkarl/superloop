@@ -215,4 +215,24 @@ public class TodoControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
+
+
+    @Test
+    public void testEditItemNotFound() throws JsonProcessingException {
+        Long nonExistentId = 123L;
+
+        // DTO has an item that does not exist in the database
+        TodoItemDTO testItem = new TodoItemDTO(nonExistentId, MOCK_ITEM_NAME, MOCK_ITEM_DESCRIPTION,
+                MOCK_ITEM_DUE_DATE, MOCK_ITEM_STATUS);
+
+        String json = mapper.writeValueAsString(testItem);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(json, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(EDIT_ITEM_URL, entity, String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
 }

@@ -49,6 +49,10 @@ public class TodoService implements ITodoService {
     public void editItem(TodoItemDTO item) {
         TodoItem itemToBeEdited = todoRepository.findTodoItemById(item.getId());
 
+        if (itemToBeEdited == null) {
+            throw new ItemNotFoundException("Todo item with given id not found.");
+        }
+
         // make sure that status does not get edited in this method
         if (!itemToBeEdited.getStatus().equals(item.getStatus())) {
             throw new IllegalEditException("Change to status field not allowed.");
@@ -67,7 +71,6 @@ public class TodoService implements ITodoService {
         // todo implement delete
     }
 
-    // todo add tests for these
     public TodoItem convertToEntity(TodoItemDTO itemDTO) {
         return modelMapper.map(itemDTO, TodoItem.class);
     }

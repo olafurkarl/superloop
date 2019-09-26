@@ -25,8 +25,7 @@ public class TodoController {
 
     @GetMapping("/getItem")
     public TodoItemDTO getItem(@RequestParam Long itemId) {
-        TodoItemDTO item = todoService.getItem(itemId);
-        return item;
+        return todoService.getItem(itemId);
     }
 
     @GetMapping("/getDoneList")
