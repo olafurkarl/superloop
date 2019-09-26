@@ -1,5 +1,7 @@
 package com.superloop.todo.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;
 
@@ -10,11 +12,13 @@ import java.time.LocalDate;
 
 @Validated
 public class TodoItemDTO {
+    @JsonIgnore
     private Long id;
 
     @NotEmpty(message = "Name is required")
     private String name;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     @FutureOrPresent(message = "Date must not be due in the past")
     private LocalDate dueDate;
 

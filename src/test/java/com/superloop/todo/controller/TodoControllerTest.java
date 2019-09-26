@@ -58,13 +58,14 @@ public class TodoControllerTest {
 
     private static List<TodoItem> mockedDoneList;
 
-    private static final String ADD_ITEM_URL = "/addItem";
-    private static final String GET_ITEM_URL = "/getItem";
-    private static final String EDIT_ITEM_URL = "/editItem";
-    private static final String MARK_ITEM_AS_DONE_URL = "/markItemAsDone";
-    private static final String DELETE_ITEM_URL = "/deleteItem";
-    private static final String GET_DONE_LIST_URL = "/getDoneList";
-    private static final String GET_PENDING_LIST_URL = "/getPendingList";
+    private static final String BASE_URL = "/api/v1";
+    private static final String ADD_ITEM_URL = BASE_URL + "/addItem";
+    private static final String GET_ITEM_URL = BASE_URL + "/getItem";
+    private static final String EDIT_ITEM_URL = BASE_URL + "/editItem";
+    private static final String MARK_ITEM_AS_DONE_URL = BASE_URL + "/markItemAsDone";
+    private static final String DELETE_ITEM_URL = BASE_URL + "/deleteItem";
+    private static final String GET_DONE_LIST_URL = BASE_URL + "/getDoneList";
+    private static final String GET_PENDING_LIST_URL = BASE_URL + "/getPendingList";
 
     @Before
     public void setup() {

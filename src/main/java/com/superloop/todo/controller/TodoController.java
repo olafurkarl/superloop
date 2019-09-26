@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @Validated
+@RequestMapping("/api/v1")
 public class TodoController {
     private final ITodoService todoService;
 

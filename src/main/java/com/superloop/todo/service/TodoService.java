@@ -19,6 +19,9 @@ public class TodoService implements ITodoService {
     public static final String STATUS_DONE = "Done";
     public static final String STATUS_PENDING = "Pending";
 
+    private static final String NOT_FOUND_MESSAGE = "Todo item with given id not found.";
+    private static final String ILLEGAL_CHANGE_MESSAGE = "Change to status field not allowed.";
+
     @Autowired
     public TodoService(TodoItemRepository todoRepository, ModelMapper modelMapper) {
         this.todoRepository = todoRepository;
@@ -42,6 +45,11 @@ public class TodoService implements ITodoService {
 
     public TodoItemDTO getItem(Long id) {
         TodoItem item = todoRepository.findTodoItemById(id);
+
+        if (item == null) {
+            throw new ItemNotFoundException(NOT_FOUND_MESSAGE);
+        }
+
         return convertToDTO(item);
     }
 
@@ -51,12 +59,12 @@ public class TodoService implements ITodoService {
         TodoItem itemToBeEdited = todoRepository.findTodoItemById(item.getId());
 
         if (itemToBeEdited == null) {
-            throw new ItemNotFoundException("Todo item with given id not found.");
+            throw new ItemNotFoundException(NOT_FOUND_MESSAGE);
         }
 
         // make sure that status does not get edited in this method
         if (!itemToBeEdited.getStatus().equals(item.getStatus())) {
-            throw new IllegalEditException("Change to status field not allowed.");
+            throw new IllegalEditException(ILLEGAL_CHANGE_MESSAGE);
         }
 
         TodoItem changedItem = convertToEntity(item);
@@ -67,7 +75,7 @@ public class TodoService implements ITodoService {
         TodoItem itemToBeMarked = todoRepository.findTodoItemById(id);
 
         if (itemToBeMarked == null) {
-            throw new ItemNotFoundException("Todo item with given id not found");
+            throw new ItemNotFoundException(NOT_FOUND_MESSAGE);
         }
 
         itemToBeMarked.setStatus(STATUS_DONE);
@@ -78,7 +86,7 @@ public class TodoService implements ITodoService {
         TodoItem itemToBeDeleted = todoRepository.findTodoItemById(id);
 
         if (itemToBeDeleted == null) {
-            throw new ItemNotFoundException("Todo item with given id not found");
+            throw new ItemNotFoundException(NOT_FOUND_MESSAGE);
         }
 
         todoRepository.delete(itemToBeDeleted);
