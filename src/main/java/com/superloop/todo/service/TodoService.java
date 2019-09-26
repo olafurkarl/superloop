@@ -6,17 +6,18 @@ import com.superloop.todo.repository.TodoItemRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Validated
 @Service
 public class TodoService implements ITodoService {
     private TodoItemRepository todoRepository;
 
     private ModelMapper modelMapper;
+
+    private static final String STATUS_DONE = "Done";
+    private static final String STATUS_PENDING = "Pending";
 
     @Autowired
     public TodoService(TodoItemRepository todoRepository, ModelMapper modelMapper) {
@@ -25,13 +26,13 @@ public class TodoService implements ITodoService {
     }
 
     public List<TodoItemDTO> getPendingList() {
-        // todo implement get pending list
-        return new ArrayList<>();
+        return todoRepository.findAllByStatus(STATUS_PENDING)
+                .stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     public List<TodoItemDTO> getDoneList() {
-        // todo implement get done list
-        return new ArrayList<>();
+        return todoRepository.findAllByStatus(STATUS_DONE)
+                .stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     public void addItem(TodoItemDTO newItem) {
@@ -64,11 +65,24 @@ public class TodoService implements ITodoService {
 
     // mark an item as "done"
     public void markItemAsDone(Long id) {
-        // todo implement mark item as done
+        TodoItem itemToBeMarked = todoRepository.findTodoItemById(id);
+
+        if (itemToBeMarked == null) {
+            throw new ItemNotFoundException("Todo item with given id not found");
+        }
+
+        itemToBeMarked.setStatus("Done");
+        todoRepository.save(itemToBeMarked);
     }
 
     public void deleteItem(Long id) {
-        // todo implement delete
+        TodoItem itemToBeDeleted = todoRepository.findTodoItemById(id);
+
+        if (itemToBeDeleted == null) {
+            throw new ItemNotFoundException("Todo item with given id not found");
+        }
+
+        todoRepository.delete(itemToBeDeleted);
     }
 
     public TodoItem convertToEntity(TodoItemDTO itemDTO) {

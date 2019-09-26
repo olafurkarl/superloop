@@ -20,7 +20,7 @@ public class TodoServiceTest {
     @Autowired
     TodoService todoService;
 
-    private static final Long TEST_TODO_ID = 2L;
+    private static final Long TEST_TODO_ID = 1L;
     private static final String TEST_TODO_NAME = "Test todo name";
     private static final String TEST_TODO_DESCRIPTION = "Test description";
     private static final LocalDate TEST_TODO_DATE = LocalDate.now().plusDays(5);
