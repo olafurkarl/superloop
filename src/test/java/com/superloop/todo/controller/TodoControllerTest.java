@@ -102,7 +102,7 @@ public class TodoControllerTest {
 
         // Making sure that the mapping for LocalDate happens correctly
         mapper.registerModule(new JavaTimeModule());
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         mapper.setDateFormat(df);
     }
 

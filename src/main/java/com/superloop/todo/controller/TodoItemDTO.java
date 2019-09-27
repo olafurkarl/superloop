@@ -1,7 +1,7 @@
 package com.superloop.todo.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;
 
@@ -12,19 +12,21 @@ import java.time.LocalDate;
 
 @Validated
 public class TodoItemDTO {
-    @JsonIgnore
+    @ApiModelProperty(position = 1, hidden = true)
     private Long id;
 
     @NotEmpty(message = "Name is required")
     private String name;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @FutureOrPresent(message = "Date must not be due in the past")
     private LocalDate dueDate;
 
     @Length(max = 500, message = "Description must not exceed 500 characters")
     private String description;
 
+    // Status could easily be a boolean "isDone" sort of value,
+    // however I've decided on a String type to allow new statuses in the future
     @Pattern(regexp = "Pending", flags = Pattern.Flag.UNICODE_CASE)
     private String status;
 
