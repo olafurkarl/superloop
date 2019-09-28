@@ -11,6 +11,8 @@ public interface ITodoService {
 
     List<TodoItemDTO> getDoneList();
 
+    List<TodoItemDTO> getList();
+
     void addItem(TodoItemDTO newItem);
 
     TodoItemDTO getItem(Long id);

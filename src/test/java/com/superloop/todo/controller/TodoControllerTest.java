@@ -58,6 +58,8 @@ public class TodoControllerTest {
 
     private static List<TodoItem> mockedDoneList;
 
+    private static List<TodoItem> mockedList;
+
     private static final String BASE_URL = "/api/v1";
     private static final String ADD_ITEM_URL = BASE_URL + "/addItem";
     private static final String GET_ITEM_URL = BASE_URL + "/getItem";
@@ -66,6 +68,7 @@ public class TodoControllerTest {
     private static final String DELETE_ITEM_URL = BASE_URL + "/deleteItem";
     private static final String GET_DONE_LIST_URL = BASE_URL + "/getDoneList";
     private static final String GET_PENDING_LIST_URL = BASE_URL + "/getPendingList";
+    private static final String GET_LIST_URL = BASE_URL + "/getList";
 
     @Before
     public void setup() {
@@ -75,6 +78,8 @@ public class TodoControllerTest {
         given(todoItemRepository.findTodoItemById(MOCK_ITEM_ID))
                 .willReturn(mockedItem);
 
+        mockedList = new ArrayList<>();
+
         mockedDoneList = new ArrayList<>();
 
         // creating mocked list of done items
@@ -83,6 +88,7 @@ public class TodoControllerTest {
                     MOCK_ITEM_DUE_DATE, STATUS_DONE);
             mockedItemDone.setId(Integer.toUnsignedLong(i));
             mockedDoneList.add(mockedItemDone);
+            mockedList.add(mockedItemDone);
         }
 
         mockedPendingList = new ArrayList<>();
@@ -93,12 +99,14 @@ public class TodoControllerTest {
                     MOCK_ITEM_DUE_DATE, STATUS_PENDING);
             mockedItemPending.setId(Integer.toUnsignedLong(i));
             mockedPendingList.add(mockedItemPending);
+            mockedList.add(mockedItemPending);
         }
-
 
         given(todoItemRepository.findAllByStatus(STATUS_PENDING)).willReturn(mockedPendingList);
 
         given(todoItemRepository.findAllByStatus(STATUS_DONE)).willReturn(mockedDoneList);
+
+        given(todoItemRepository.findAll()).willReturn(mockedList);
 
         // Making sure that the mapping for LocalDate happens correctly
         mapper.registerModule(new JavaTimeModule());
@@ -332,6 +340,18 @@ public class TodoControllerTest {
         ResponseEntity<String> response = restTemplate.getForEntity(builder.toUriString(), String.class);
 
         String mockJson = mapper.writeValueAsString(mockedPendingList);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockJson, response.getBody());
+    }
+
+    @Test
+    public void testGetList() throws JsonProcessingException {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath(GET_LIST_URL);
+
+        ResponseEntity<String> response = restTemplate.getForEntity(builder.toUriString(), String.class);
+
+        String mockJson = mapper.writeValueAsString(mockedList);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockJson, response.getBody());

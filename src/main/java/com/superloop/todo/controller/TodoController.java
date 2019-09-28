@@ -39,6 +39,11 @@ public class TodoController {
         return todoService.getPendingList();
     }
 
+    @GetMapping("/getList")
+    public List<TodoItemDTO> getList() {
+        return todoService.getList();
+    }
+
     @PostMapping("/editItem")
     public void editItem(@Valid @RequestBody TodoItemDTO itemDTO) {
         todoService.editItem(itemDTO);

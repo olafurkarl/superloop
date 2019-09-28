@@ -38,6 +38,10 @@ public class TodoService implements ITodoService {
                 .stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    public List<TodoItemDTO> getList() {
+        return todoRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
     public void addItem(TodoItemDTO newItem) {
         TodoItem itemEntity = convertToEntity(newItem);
         todoRepository.save(itemEntity);
