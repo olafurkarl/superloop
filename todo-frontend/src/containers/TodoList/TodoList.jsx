@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchTodos } from '../../actions';
+import TodoItem from '../../components/TodoItem/TodoItem';
 
 const TodoList = ({ todoList, getList }) => {
   useEffect(() => {
@@ -11,16 +12,16 @@ const TodoList = ({ todoList, getList }) => {
   let list = '';
   if (todoList) {
     list = todoList.map((todo) => (
-      <div key={`${todo.id}`} className="row">
-        <div>{todo.name}</div>
-      </div>
+      <li key={`${todo.id}`} className="row">
+        <TodoItem name={todo.name} description={todo.description} status={todo.status} />
+      </li>
     ));
   }
 
   return (
-    <div>
+    <ul>
       {list}
-    </div>
+    </ul>
   );
 };
 
