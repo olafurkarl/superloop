@@ -16,7 +16,7 @@ const TodoList = ({
   let render = '';
   if (todoList && todoList.length > 0) {
     render = todoList.map((todo, index) => {
-      if (todo.status === statusShowing) {
+      if (todo.status === statusShowing || statusShowing === 'All') {
         return (
           <li key={`${todo.id}`}>
             <TodoItem todoItem={todo} />

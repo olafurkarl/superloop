@@ -8,6 +8,7 @@ function TodoContainer() {
     <div>
       <button type="button" onClick={() => changeStatus('Pending')}>Pending</button>
       <button type="button" onClick={() => changeStatus('Done')}>Done</button>
+      <button type="button" onClick={() => changeStatus('All')}>All</button>
       <TodoAdd />
       <TodoList statusShowing={currentStatus} />
     </div>
