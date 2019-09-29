@@ -18,7 +18,7 @@ public class TodoItemDTO {
     @NotEmpty(message = "Name is required")
     private String name;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @FutureOrPresent(message = "Date must not be due in the past")
     private LocalDate dueDate;
 
