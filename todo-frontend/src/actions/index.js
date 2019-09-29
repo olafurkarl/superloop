@@ -4,7 +4,7 @@ export const FETCH_TODO_LIST = 'FETCH_TODO_LIST';
 export const RECEIVE_TODO_LIST = 'RECEIVE_TODO_LIST';
 export const RECEIVED_ERROR = 'RECEIVED_ERROR';
 export const MARK_ITEM_DONE = 'MARK_ITEM_DONE';
-export const DELETE_ITEM = 'DELETE_ITEM';
+export const REMOVE_ITEM = 'REMOVE_ITEM';
 
 export const receivedError = (error) => ({
   type: RECEIVED_ERROR,
@@ -39,12 +39,31 @@ export const finishItem = (index) => ({
   index,
 });
 
+export const removeItem = (index) => ({
+  type: REMOVE_ITEM,
+  index,
+});
+
 export function markItemAsDone(id, index) {
   return (dispatch) => axios.post(`api/v1/markItemAsDone?itemId=${id}`)
     .then(
       (response) => {
         if (response.status === 200) {
           dispatch(finishItem(index));
+        } else {
+          receivedError(response.message);
+        }
+      },
+      (error) => dispatch(receivedError(error)),
+    );
+}
+
+export function deleteItem(id, index) {
+  return (dispatch) => axios.post(`api/v1/deleteItem?itemId=${id}`)
+    .then(
+      (response) => {
+        if (response.status === 200) {
+          dispatch(removeItem(index));
         } else {
           receivedError(response.message);
         }

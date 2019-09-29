@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 import {
-  FETCH_TODO_LIST, MARK_ITEM_DONE, RECEIVE_TODO_LIST, RECEIVED_ERROR,
+  FETCH_TODO_LIST, MARK_ITEM_DONE, RECEIVE_TODO_LIST, RECEIVED_ERROR, REMOVE_ITEM,
 } from '../actions';
 
 const initialState = {
@@ -32,6 +32,14 @@ const reducer = (state = initialState, action) => {
         [action.index]: {
           status: { $set: 'Done' },
         },
+      },
+    });
+  }
+
+  if (action.type === REMOVE_ITEM) {
+    return update(state, {
+      todoList: {
+        $splice: [[action.index, 1]],
       },
     });
   }
