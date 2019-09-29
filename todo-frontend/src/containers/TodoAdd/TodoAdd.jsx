@@ -11,10 +11,15 @@ const TodoAdd = ({ submitItem }) => {
     setIsAddItemVisible(true);
   };
 
+  const submitItemAndHide = (todoItem) => {
+    setIsAddItemVisible(false);
+    submitItem(todoItem);
+  };
+
   return (
     <div>
       <button type="button" onClick={handleClick}>Add new TODO</button>
-      {addItemVisible && <TodoView readOnly={false} onSubmit={submitItem} />}
+      {addItemVisible && <TodoView readOnly={false} onSubmit={submitItemAndHide} />}
     </div>
   );
 };
