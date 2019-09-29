@@ -7,7 +7,7 @@ import TodoCheck from '../../components/TodoCheck/TodoCheck';
 import TodoDelete from '../../components/TodoDelete/TodoDelete';
 
 const TodoList = ({
-  todoList, getList, setItemDone, removeItem,
+  todoList, getList, setItemDone, removeItem, statusShowing,
 }) => {
   useEffect(() => {
     getList();
@@ -15,13 +15,18 @@ const TodoList = ({
 
   let render = '';
   if (todoList && todoList.length > 0) {
-    render = todoList.map((todo, index) => (
-      <li key={`${todo.id}`}>
-        <TodoItem todoItem={todo} />
-        <TodoCheck todoIndex={index} todoId={todo.id} isChecked={todo.status === 'Done'} onCheck={setItemDone} />
-        <TodoDelete todoIndex={index} onDelete={removeItem} todoId={todo.id} />
-      </li>
-    ));
+    render = todoList.map((todo, index) => {
+      if (todo.status === statusShowing) {
+        return (
+          <li key={`${todo.id}`}>
+            <TodoItem todoItem={todo} />
+            <TodoCheck todoIndex={index} todoId={todo.id} isChecked={todo.status === 'Done'} onCheck={setItemDone} />
+            <TodoDelete todoIndex={index} onDelete={removeItem} todoId={todo.id} />
+          </li>
+        );
+      }
+      return '';
+    });
   } else {
     render = <div>No items added yet!</div>;
   }
@@ -38,6 +43,7 @@ TodoList.propTypes = {
   getList: PropTypes.func.isRequired,
   setItemDone: PropTypes.func.isRequired,
   removeItem: PropTypes.func.isRequired,
+  statusShowing: PropTypes.string.isRequired,
 };
 
 TodoList.defaultProps = {
@@ -46,7 +52,6 @@ TodoList.defaultProps = {
 
 const mapStateToProps = (state) => ({
   todoList: state.todoList,
-  loading: state.loading,
 });
 
 const mapDispatchToProps = {
