@@ -5,6 +5,7 @@ export const RECEIVE_TODO_LIST = 'RECEIVE_TODO_LIST';
 export const RECEIVED_ERROR = 'RECEIVED_ERROR';
 export const MARK_ITEM_DONE = 'MARK_ITEM_DONE';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
+export const ADD_ITEM = 'ADD_ITEM';
 
 export const receivedError = (error) => ({
   type: RECEIVED_ERROR,
@@ -39,11 +40,6 @@ export const finishItem = (index) => ({
   index,
 });
 
-export const removeItem = (index) => ({
-  type: REMOVE_ITEM,
-  index,
-});
-
 export function markItemAsDone(id, index) {
   return (dispatch) => axios.post(`api/v1/markItemAsDone?itemId=${id}`)
     .then(
@@ -58,6 +54,11 @@ export function markItemAsDone(id, index) {
     );
 }
 
+export const removeItem = (index) => ({
+  type: REMOVE_ITEM,
+  index,
+});
+
 export function deleteItem(id, index) {
   return (dispatch) => axios.post(`api/v1/deleteItem?itemId=${id}`)
     .then(
@@ -66,6 +67,26 @@ export function deleteItem(id, index) {
           dispatch(removeItem(index));
         } else {
           receivedError(response.message);
+        }
+      },
+      (error) => dispatch(receivedError(error)),
+    );
+}
+
+export const itemAdded = (todoItem, id) => ({
+  type: ADD_ITEM,
+  todoItem,
+  id,
+});
+
+export function addItem(todoItem) {
+  return (dispatch) => axios.post('api/v1/addItem', todoItem)
+    .then(
+      (response) => {
+        if (response.status === 200) {
+          dispatch(itemAdded(todoItem, response.data));
+        } else {
+          receivedError(response);
         }
       },
       (error) => dispatch(receivedError(error)),

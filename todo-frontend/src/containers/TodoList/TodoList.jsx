@@ -13,20 +13,22 @@ const TodoList = ({
     getList();
   }, []);
 
-  let list = '';
-  if (todoList) {
-    list = todoList.map((todo, index) => (
+  let render = '';
+  if (todoList && todoList.length > 0) {
+    render = todoList.map((todo, index) => (
       <li key={`${todo.id}`}>
-        <TodoItem name={todo.name} description={todo.description} status={todo.status} />
+        <TodoItem todoItem={todo} />
         <TodoCheck todoIndex={index} todoId={todo.id} isChecked={todo.status === 'Done'} onCheck={setItemDone} />
         <TodoDelete todoIndex={index} onDelete={removeItem} todoId={todo.id} />
       </li>
     ));
+  } else {
+    render = <div>No items added yet!</div>;
   }
 
   return (
     <ul>
-      {list}
+      {render}
     </ul>
   );
 };
