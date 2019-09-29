@@ -13,7 +13,7 @@ public interface ITodoService {
 
     List<TodoItemDTO> getList();
 
-    void addItem(TodoItemDTO newItem);
+    Long addItem(TodoItemDTO newItem);
 
     TodoItemDTO getItem(Long id);
 

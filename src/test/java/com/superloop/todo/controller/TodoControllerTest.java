@@ -128,6 +128,7 @@ public class TodoControllerTest {
 
         ResponseEntity<String> response = restTemplate.postForEntity(ADD_ITEM_URL, entity, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(TEST_TODO_ID.toString(), response.getBody());
     }
 
     @Test

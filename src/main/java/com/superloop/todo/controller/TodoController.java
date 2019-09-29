@@ -20,8 +20,8 @@ public class TodoController {
     }
 
     @PostMapping("/addItem")
-    public void addItem(@Valid @RequestBody TodoItemDTO itemDTO) {
-        todoService.addItem(itemDTO);
+    public Long addItem(@Valid @RequestBody TodoItemDTO itemDTO) {
+        return todoService.addItem(itemDTO);
     }
 
     @GetMapping("/getItem")
@@ -58,5 +58,4 @@ public class TodoController {
     public void deleteItem(@RequestParam Long itemId) {
         todoService.deleteItem(itemId);
     }
-
 }
