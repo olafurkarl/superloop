@@ -52,10 +52,16 @@ const reducer = (state = initialState, action) => {
   }
 
   if (action.type === RECEIVED_ERROR) {
-    const { defaultMessage } = action.error.response.data.errors[0];
+    const { errors } = action.error.response.data;
+    let message = 'An error occurred';
+    if (typeof errors !== 'undefined' && errors.length > 0) {
+      [message] = errors; // Get description from API
+    } else {
+      message = action.error.response.statusText; // No description from API, return status text
+    }
     return update(state, {
       error: {
-        $set: defaultMessage,
+        $set: message,
       },
     });
   }
