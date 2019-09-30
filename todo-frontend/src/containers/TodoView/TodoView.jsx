@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const TodoView = ({
-  name, description, dueDate, readOnly, onSubmit, setVisible, todoIndex, todoId,
+  name, description, status, dueDate, readOnly, onSubmit, setVisible, todoIndex, todoId,
 }) => {
   const [nameText, setNameText] = useState(name);
   const [descriptionText, setDescriptionText] = useState(description);
@@ -25,7 +25,7 @@ const TodoView = ({
       id: todoId,
       name: nameText,
       description: descriptionText,
-      status: 'Pending',
+      status,
       dueDate: selectedDate.toJSON(),
     };
     onSubmit(todoItem, todoIndex);
@@ -64,7 +64,8 @@ const TodoView = ({
 TodoView.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
-  dueDate: PropTypes.instanceOf(Date),
+  dueDate: PropTypes.string,
+  status: PropTypes.string,
   readOnly: PropTypes.bool,
   onSubmit: PropTypes.func,
   setVisible: PropTypes.func,
@@ -75,7 +76,8 @@ TodoView.propTypes = {
 TodoView.defaultProps = {
   name: 'New item',
   description: '',
-  dueDate: new Date(),
+  dueDate: new Date().toUTCString(),
+  status: 'Pending',
   readOnly: true,
   onSubmit: () => {},
   setVisible: () => {},

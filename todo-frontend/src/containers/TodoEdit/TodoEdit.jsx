@@ -21,6 +21,7 @@ const TodoEdit = ({ todoIndex, todoItem, editItem }) => {
           todoIndex={todoIndex}
           todoId={todoItem.id}
           name={todoItem.name}
+          status={todoItem.status}
           description={todoItem.description}
           dueDate={todoItem.dueDate}
         />
