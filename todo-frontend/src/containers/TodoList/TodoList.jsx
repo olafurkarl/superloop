@@ -14,7 +14,7 @@ import {
 } from '../../actions';
 import TodoItem from '../../components/TodoItem/TodoItem';
 import TodoCheck from '../../components/TodoCheck/TodoCheck';
-import TodoDelete from '../../components/TodoDelete/TodoDelete';
+import TodoDelete from '../TodoDelete/TodoDelete';
 import TodoEdit from '../TodoEdit/TodoEdit';
 
 const TodoList = ({
@@ -35,7 +35,7 @@ const TodoList = ({
             <Card.Header>
               <Container>
                 <Row>
-                  <Col>
+                  <Col sm={2}>
                     <TodoCheck
                       todoIndex={index}
                       todoId={todo.id}
@@ -43,15 +43,17 @@ const TodoList = ({
                       onCheck={setItemDone}
                     />
                   </Col>
-                  <Col sm={7} className="m-1">
-                    {todo.name}
+                  <Col sm={5} className="m-1">
+                    <b>
+                      {todo.name}
+                    </b>
                   </Col>
-                  <Col>
+                  <Col sm={2} className="m-2">
                     <Accordion.Toggle as={Button} variant="info" eventKey={todo.id}>
                       Details
                     </Accordion.Toggle>
                   </Col>
-                  <Col>
+                  <Col sm={2} className="m-2">
                     <TodoDelete todoIndex={index} onDelete={removeItem} todoId={todo.id} />
                   </Col>
                 </Row>

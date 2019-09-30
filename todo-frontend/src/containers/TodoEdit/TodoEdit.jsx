@@ -13,7 +13,7 @@ const TodoEdit = ({ todoIndex, todoItem, editItem }) => {
 
   return (
     <div>
-      <Button onClick={() => enableEdit()}>Edit</Button>
+      <Button className="m-2" onClick={() => enableEdit()}>Edit</Button>
       {editEnabled && (
         <TodoView
           readOnly={false}

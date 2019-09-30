@@ -109,7 +109,6 @@ const TodoView = ({
           </Button>
         </Modal.Footer>
       )}
-
     </Modal>
   );
 };
