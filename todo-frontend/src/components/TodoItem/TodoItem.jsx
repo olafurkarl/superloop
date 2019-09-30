@@ -1,16 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TodoView from '../../containers/TodoView/TodoView';
 
 const TodoItem = ({ todoItem }) => (
   <div>
     <div>{todoItem.name}</div>
-    <TodoView
-      name={todoItem.name}
-      description={todoItem.description}
-      status={todoItem.status}
-      dueDate={new Date(todoItem.dueDate)}
-    />
+    <div>{todoItem.description}</div>
+    <div>{todoItem.status}</div>
+    <div>{new Date(todoItem.dueDate).toLocaleDateString()}</div>
   </div>
 );
 

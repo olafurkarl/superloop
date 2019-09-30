@@ -6,6 +6,7 @@ export const RECEIVED_ERROR = 'RECEIVED_ERROR';
 export const MARK_ITEM_DONE = 'MARK_ITEM_DONE';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const ADD_ITEM = 'ADD_ITEM';
+export const EDIT_ITEM = 'EDIT_ITEM';
 
 export const receivedError = (error) => ({
   type: RECEIVED_ERROR,
@@ -85,6 +86,26 @@ export function addItem(todoItem) {
       (response) => {
         if (response.status === 200) {
           dispatch(itemAdded(todoItem, response.data));
+        } else {
+          receivedError(response);
+        }
+      },
+      (error) => dispatch(receivedError(error)),
+    );
+}
+
+export const dispatchEdit = (todoItem, todoIndex) => ({
+  type: EDIT_ITEM,
+  todoItem,
+  todoIndex,
+});
+
+export function performEditItem(todoItem, todoIndex) {
+  return (dispatch) => axios.post('api/v1/editItem', todoItem)
+    .then(
+      (response) => {
+        if (response.status === 200) {
+          dispatch(dispatchEdit(todoItem, todoIndex));
         } else {
           receivedError(response);
         }

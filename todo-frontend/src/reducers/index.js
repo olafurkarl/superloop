@@ -1,6 +1,12 @@
 import update from 'immutability-helper';
 import {
-  FETCH_TODO_LIST, MARK_ITEM_DONE, RECEIVE_TODO_LIST, RECEIVED_ERROR, REMOVE_ITEM, ADD_ITEM,
+  FETCH_TODO_LIST,
+  MARK_ITEM_DONE,
+  RECEIVE_TODO_LIST,
+  RECEIVED_ERROR,
+  REMOVE_ITEM,
+  ADD_ITEM,
+  EDIT_ITEM,
 } from '../actions';
 
 const initialState = {
@@ -59,6 +65,16 @@ const reducer = (state = initialState, action) => {
     return update(state, {
       todoList: {
         $push: [newItem],
+      },
+    });
+  }
+
+  if (action.type === EDIT_ITEM) {
+    return update(state, {
+      todoList: {
+        [action.todoIndex]: {
+          $set: action.todoItem,
+        },
       },
     });
   }

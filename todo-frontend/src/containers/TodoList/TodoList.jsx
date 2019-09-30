@@ -1,10 +1,15 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteItem, fetchTodos, markItemAsDone } from '../../actions';
+import {
+  deleteItem,
+  fetchTodos,
+  markItemAsDone,
+} from '../../actions';
 import TodoItem from '../../components/TodoItem/TodoItem';
 import TodoCheck from '../../components/TodoCheck/TodoCheck';
 import TodoDelete from '../../components/TodoDelete/TodoDelete';
+import TodoEdit from '../TodoEdit/TodoEdit';
 
 const TodoList = ({
   todoList, getList, setItemDone, removeItem, statusShowing,
@@ -22,6 +27,7 @@ const TodoList = ({
             <TodoItem todoItem={todo} />
             <TodoCheck todoIndex={index} todoId={todo.id} isChecked={todo.status === 'Done'} onCheck={setItemDone} />
             <TodoDelete todoIndex={index} onDelete={removeItem} todoId={todo.id} />
+            <TodoEdit todoIndex={index} todoItem={todo} />
           </li>
         );
       }
