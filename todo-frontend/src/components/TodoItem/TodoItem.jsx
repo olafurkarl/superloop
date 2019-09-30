@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 const TodoItem = ({ todoItem }) => (
   <div>
-    <div>{todoItem.name}</div>
-    <div>{todoItem.description}</div>
-    <div>{todoItem.status}</div>
-    <div>{new Date(todoItem.dueDate).toLocaleDateString()}</div>
+    <div>{`Name: ${todoItem.name}`}</div>
+    <div>{todoItem.description !== '' && `Description: ${todoItem.description}`}</div>
+    <div>{`Status: ${todoItem.status}`}</div>
+    <div>{`Due date: ${new Date(todoItem.dueDate).toLocaleDateString()}`}</div>
   </div>
 );
 

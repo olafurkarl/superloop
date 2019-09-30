@@ -40,12 +40,12 @@ function TodoContainer() {
             </Button>
           </Col>
         </Row>
-        <Row className="m-1">
+        <Row className="m-3">
           <Col className="text-center">
             <TodoAdd />
           </Col>
         </Row>
-        <Row className="m-1">
+        <Row className="m-4">
           <Col className="text-center">
             <TodoList statusShowing={currentStatus} />
           </Col>

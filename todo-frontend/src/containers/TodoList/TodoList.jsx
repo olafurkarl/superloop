@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import ListGroup from 'react-bootstrap/ListGroup';
 import { connect } from 'react-redux';
+import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
 import {
   deleteItem,
   fetchTodos,
@@ -26,12 +31,39 @@ const TodoList = ({
       if (todo.status === statusShowing || statusShowing === 'All') {
         containsItem = true;
         return (
-          <ListGroup.Item key={`${todo.id}`}>
-            <TodoItem todoItem={todo} />
-            <TodoCheck todoIndex={index} todoId={todo.id} isChecked={todo.status === 'Done'} onCheck={setItemDone} />
-            <TodoDelete todoIndex={index} onDelete={removeItem} todoId={todo.id} />
-            <TodoEdit todoIndex={index} todoItem={todo} />
-          </ListGroup.Item>
+          <Card key={`${todo.id}`}>
+            <Card.Header>
+              <Container>
+                <Row>
+                  <Col>
+                    <TodoCheck
+                      todoIndex={index}
+                      todoId={todo.id}
+                      isChecked={todo.status === 'Done'}
+                      onCheck={setItemDone}
+                    />
+                  </Col>
+                  <Col sm={7} className="m-1">
+                    {todo.name}
+                  </Col>
+                  <Col>
+                    <Accordion.Toggle as={Button} variant="info" eventKey={todo.id}>
+                      Details
+                    </Accordion.Toggle>
+                  </Col>
+                  <Col>
+                    <TodoDelete todoIndex={index} onDelete={removeItem} todoId={todo.id} />
+                  </Col>
+                </Row>
+              </Container>
+            </Card.Header>
+            <Accordion.Collapse eventKey={todo.id}>
+              <div className="m-4">
+                <TodoItem todoItem={todo} />
+                <TodoEdit todoIndex={index} todoItem={todo} />
+              </div>
+            </Accordion.Collapse>
+          </Card>
         );
       }
       return null;
@@ -42,9 +74,9 @@ const TodoList = ({
   }
 
   return (
-    <ListGroup>
+    <Accordion>
       {render}
-    </ListGroup>
+    </Accordion>
   );
 };
 
