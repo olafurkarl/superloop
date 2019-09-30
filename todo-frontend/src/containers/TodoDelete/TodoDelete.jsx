@@ -15,7 +15,7 @@ const TodoDelete = ({ todoIndex, todoId, onDelete }) => {
         setVisible={setShowModal}
         visible={modalShowing}
       />
-      <Button variant="danger" onClick={() => setShowModal(true)}>Delete</Button>
+      <Button variant="danger" size="sm" className="m-1" onClick={() => setShowModal(true)}>Delete</Button>
     </div>
   );
 };

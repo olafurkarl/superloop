@@ -14,7 +14,11 @@ const TodoAdd = ({ submitItem }) => {
 
   return (
     <div>
-      <Button onClick={handleClick}>Add new TODO</Button>
+      <Button
+        onClick={handleClick}
+      >
+        Add new TODO
+      </Button>
       {addItemVisible
       && (
         <div>

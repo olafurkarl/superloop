@@ -7,6 +7,7 @@ import {
   REMOVE_ITEM,
   ADD_ITEM,
   EDIT_ITEM,
+  DISMISS_ERROR,
 } from '../actions';
 
 const initialState = {
@@ -51,10 +52,18 @@ const reducer = (state = initialState, action) => {
   }
 
   if (action.type === RECEIVED_ERROR) {
-    console.dir(action.error);
+    const { defaultMessage } = action.error.response.data.errors[0];
     return update(state, {
       error: {
-        $set: action.error,
+        $set: defaultMessage,
+      },
+    });
+  }
+
+  if (action.type === DISMISS_ERROR) {
+    return update(state, {
+      error: {
+        $set: '',
       },
     });
   }

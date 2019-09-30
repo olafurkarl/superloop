@@ -33,9 +33,9 @@ const TodoList = ({
         return (
           <Card key={`${todo.id}`}>
             <Card.Header>
-              <Container>
+              <Container fluid>
                 <Row>
-                  <Col sm={2}>
+                  <Col xs={1} className="my-auto">
                     <TodoCheck
                       todoIndex={index}
                       todoId={todo.id}
@@ -43,17 +43,15 @@ const TodoList = ({
                       onCheck={setItemDone}
                     />
                   </Col>
-                  <Col sm={5} className="m-1">
+                  <Col className="my-auto text-left text-truncate">
                     <b>
                       {todo.name}
                     </b>
                   </Col>
-                  <Col sm={2} className="m-2">
-                    <Accordion.Toggle as={Button} variant="info" eventKey={todo.id}>
+                  <Col className="m-1 text-right">
+                    <Accordion.Toggle as={Button} variant="info" size="sm" className="m-1" eventKey={todo.id}>
                       Details
                     </Accordion.Toggle>
-                  </Col>
-                  <Col sm={2} className="m-2">
                     <TodoDelete todoIndex={index} onDelete={removeItem} todoId={todo.id} />
                   </Col>
                 </Row>

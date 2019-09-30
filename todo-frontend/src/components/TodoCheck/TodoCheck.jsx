@@ -7,6 +7,7 @@ const TodoCheck = ({
   todoIndex, todoId, isChecked, onCheck,
 }) => (
   <div
+    className="d-inline-block"
     role="button"
     tabIndex={todoIndex}
     onClick={() => !isChecked && onCheck(todoId, todoIndex)} // Should not be able to uncheck

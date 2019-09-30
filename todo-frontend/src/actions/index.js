@@ -7,16 +7,25 @@ export const MARK_ITEM_DONE = 'MARK_ITEM_DONE';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const ADD_ITEM = 'ADD_ITEM';
 export const EDIT_ITEM = 'EDIT_ITEM';
+export const DISMISS_ERROR = 'DISMISS_ERROR';
 
 export const receivedError = (error) => ({
   type: RECEIVED_ERROR,
   error,
 });
 
+export const dismissError = () => ({
+  type: DISMISS_ERROR,
+});
+
 export const receivedTodoList = (json) => ({
   type: RECEIVE_TODO_LIST,
   json,
 });
+
+export function clearError() {
+  return (dispatch) => dispatch(dismissError());
+}
 
 export const requestTodoList = () => ({
   type: FETCH_TODO_LIST,
@@ -51,7 +60,7 @@ export function markItemAsDone(id, index) {
           receivedError(response.message);
         }
       },
-      (error) => dispatch(receivedError(error)),
+      (error) => (receivedError(error)),
     );
 }
 
