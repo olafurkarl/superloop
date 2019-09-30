@@ -55,10 +55,11 @@ const reducer = (state = initialState, action) => {
     const { errors } = action.error.response.data;
     let message = 'An error occurred';
     if (typeof errors !== 'undefined' && errors.length > 0) {
-      [message] = errors; // Get description from API
-    } else {
+      message = errors[0].defaultMessage; // Get description from API
+    } else if (typeof action.error.response.statusText !== 'undefined') {
       message = action.error.response.statusText; // No description from API, return status text
     }
+
     return update(state, {
       error: {
         $set: message,
@@ -77,6 +78,7 @@ const reducer = (state = initialState, action) => {
   if (action.type === ADD_ITEM) {
     const newItem = action.todoItem;
     newItem.id = action.id;
+
     return update(state, {
       todoList: {
         $push: [newItem],
