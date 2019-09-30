@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { addItem } from '../../actions';
 import TodoView from '../TodoView/TodoView';
@@ -13,11 +14,17 @@ const TodoAdd = ({ submitItem }) => {
 
   return (
     <div>
-      <button type="button" onClick={handleClick}>Add new TODO</button>
+      <Button onClick={handleClick}>Add new TODO</Button>
       {addItemVisible
       && (
         <div>
-          <TodoView readOnly={false} onSubmit={submitItem} setVisible={setIsAddItemVisible} />
+          <TodoView
+            readOnly={false}
+            onSubmit={submitItem}
+            setVisible={setIsAddItemVisible}
+            visible={addItemVisible}
+            title="Add TODO Item"
+          />
         </div>
       )}
     </div>

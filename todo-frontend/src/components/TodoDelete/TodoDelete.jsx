@@ -1,8 +1,9 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
 const TodoDelete = ({ todoIndex, todoId, onDelete }) => (
-  <button type="button" onClick={() => onDelete(todoId, todoIndex)}>Delete</button>
+  <Button onClick={() => onDelete(todoId, todoIndex)}>Delete</Button>
 );
 
 TodoDelete.propTypes = {

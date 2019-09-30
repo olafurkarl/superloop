@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import TodoView from '../TodoView/TodoView';
 import { performEditItem } from '../../actions';
@@ -12,7 +13,7 @@ const TodoEdit = ({ todoIndex, todoItem, editItem }) => {
 
   return (
     <div>
-      <button type="button" onClick={() => enableEdit()}>Edit</button>
+      <Button onClick={() => enableEdit()}>Edit</Button>
       {editEnabled && (
         <TodoView
           readOnly={false}
@@ -24,6 +25,8 @@ const TodoEdit = ({ todoIndex, todoItem, editItem }) => {
           status={todoItem.status}
           description={todoItem.description}
           dueDate={todoItem.dueDate}
+          visible={editEnabled}
+          title="Edit TODO Item"
         />
       )}
     </div>

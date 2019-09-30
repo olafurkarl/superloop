@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import DatePicker from 'react-datepicker';
+import PropTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const TodoView = ({
-  name, description, status, dueDate, readOnly, onSubmit, setVisible, todoIndex, todoId,
+  name, description,
+  status, dueDate,
+  readOnly, onSubmit,
+  setVisible, todoIndex,
+  todoId, visible, title,
 }) => {
   const [nameText, setNameText] = useState(name);
   const [descriptionText, setDescriptionText] = useState(description);
@@ -33,31 +42,75 @@ const TodoView = ({
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder={nameText}
-        readOnly={readOnly}
-        onChange={!readOnly ? onNameChange : undefined}
-      />
-      <input
-        type="text"
-        placeholder={descriptionText}
-        readOnly={readOnly}
-        onChange={!readOnly ? onDescriptionChange : undefined}
-      />
-      <DatePicker
-        selected={selectedDate}
-        onChange={!readOnly ? onDateChange : undefined}
-      />
+    <Modal show={visible} onHide={() => setVisible(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>{title}</Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+        <Form>
+          <Form.Group as={Row}>
+            <Form.Label column sm={3}>
+              Name
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control
+                type="text"
+                placeholder="New item"
+                value={nameText}
+                onChange={onNameChange}
+              />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row}>
+            <Form.Label column sm={3}>
+              Description
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control
+                as="textarea"
+                rows="3"
+                placeholder="Optional description"
+                value={descriptionText}
+                onChange={onDescriptionChange}
+              />
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row}>
+            <Form.Label column sm={3}>
+              Due date
+            </Form.Label>
+            <Col sm={10}>
+              <DatePicker
+                selected={selectedDate}
+                onChange={!readOnly ? onDateChange : undefined}
+              />
+            </Col>
+          </Form.Group>
+        </Form>
+
+      </Modal.Body>
       {!readOnly
       && (
-        <div>
-          <button type="button" onClick={onSubmitButtonClick}>Save</button>
-          <button type="button" onClick={() => setVisible(false)}>Cancel</button>
-        </div>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={onSubmitButtonClick}
+          >
+            Save
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => setVisible(false)}
+          >
+            Cancel
+          </Button>
+        </Modal.Footer>
       )}
-    </div>
+
+    </Modal>
   );
 };
 
@@ -71,6 +124,8 @@ TodoView.propTypes = {
   setVisible: PropTypes.func,
   todoIndex: PropTypes.number,
   todoId: PropTypes.number,
+  visible: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 TodoView.defaultProps = {

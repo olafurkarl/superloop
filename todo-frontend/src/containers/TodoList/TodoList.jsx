@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { connect } from 'react-redux';
 import {
   deleteItem,
@@ -16,31 +17,34 @@ const TodoList = ({
 }) => {
   useEffect(() => {
     getList();
-  }, []);
+  }, [getList]);
 
-  let render = '';
+  let containsItem = false;
+  let render = null;
   if (todoList && todoList.length > 0) {
     render = todoList.map((todo, index) => {
       if (todo.status === statusShowing || statusShowing === 'All') {
+        containsItem = true;
         return (
-          <li key={`${todo.id}`}>
+          <ListGroup.Item key={`${todo.id}`}>
             <TodoItem todoItem={todo} />
             <TodoCheck todoIndex={index} todoId={todo.id} isChecked={todo.status === 'Done'} onCheck={setItemDone} />
             <TodoDelete todoIndex={index} onDelete={removeItem} todoId={todo.id} />
             <TodoEdit todoIndex={index} todoItem={todo} />
-          </li>
+          </ListGroup.Item>
         );
       }
-      return '';
+      return null;
     });
-  } else {
-    render = <div>No items added yet!</div>;
+  }
+  if (!containsItem) {
+    render = <div>No items in this list yet!</div>;
   }
 
   return (
-    <ul>
+    <ListGroup>
       {render}
-    </ul>
+    </ListGroup>
   );
 };
 
