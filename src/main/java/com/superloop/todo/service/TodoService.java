@@ -43,6 +43,10 @@ public class TodoService implements ITodoService {
     }
 
     public Long addItem(TodoItemDTO newItem) {
+        if (!newItem.getStatus().equals(STATUS_PENDING)) {
+            throw new IllegalAddException("New item status must be pending");
+        }
+
         TodoItem itemEntity = convertToEntity(newItem);
         todoRepository.save(itemEntity);
         return itemEntity.getId();

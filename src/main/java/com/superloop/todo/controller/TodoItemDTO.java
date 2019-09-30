@@ -27,8 +27,8 @@ public class TodoItemDTO {
 
     // Status could easily be a boolean "isDone" sort of value,
     // however I've decided on a String type to allow new statuses in the future
-    @Pattern(regexp = "Pending", flags = Pattern.Flag.UNICODE_CASE)
-    private String status;
+    @Pattern(regexp = "Pending|Done", flags = Pattern.Flag.UNICODE_CASE)
+    private String status = "Pending";
 
     public TodoItemDTO() {
     }
